@@ -29,9 +29,9 @@ dependencies = [
 ]
 
 [project.urls]                         # 以前叫 url/homepage
-Homepage = "https://github.com/python-boot//commons-async"
-Repository = "https://github.com/python-boot//commons-async"
-Issues = "https://github.com/python-boot//commons-async"
+Homepage = "https://github.com/python-boot/commons-async"
+Repository = "https://github.com/python-boot/commons-async"
+Issues = "https://github.com/python-boot/commons-async"
 
 
 [build-system]
