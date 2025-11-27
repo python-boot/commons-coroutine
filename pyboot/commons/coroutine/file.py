@@ -5,6 +5,9 @@ import aiohttp
 import asyncio
 import os
 import shutil
+from pyboot.commons.utils.log import Logger
+
+_logger = Logger('dataflow.utils.async.file')
 
 class AsyncFileReader:
     """异步文件读取器"""
@@ -19,10 +22,10 @@ class AsyncFileReader:
             async for line in f:
                 bytes_read = line.encode(encoding)                        
                 if callable(process_fn):
-                    rtn = process_fn(total_size, line, bytes_read+1)
+                    rtn = process_fn(total_size, line, len(bytes_read))
                     if rtn:
                         break 
-                yield line.strip()
+                yield line
                 
     @staticmethod
     async def read_bytes(filename: str | Path, chunk_size: int = 64 * 1024, process_fn:Callable=None) -> AsyncIterator[bytes]:     
@@ -158,7 +161,38 @@ class AsyncFileReader:
     async def rmtree(path: str|Path) -> None:
         """异步递归删除目录"""
         await asyncio.get_event_loop().run_in_executor(None, shutil.rmtree, Path(path))
+        
+        
 
+if __name__ == "__main__":
+    def callback(total, chunk, chunk_size):
+        _logger.DEBUG(f'total={total} chunk={chunk} chunk_size={chunk_size}')
+        
+    _total = [0]
+        
+    def callback2(total, chunk, chunk_size):
+        _total[0] += chunk_size
+        _logger.DEBUG(f'total={total} chunk_size={chunk_size} _total={_total[0]}')
+        
+    async def test():
+        async for line in AsyncFileReader.read_lines('README.MD', process_fn=callback):
+            _logger.DEBUG(line)
+            
+        async for line in AsyncFileReader.read_bytes('README.MD', process_fn=callback):
+            _logger.DEBUG(line.decode())
+            
+        src = 'https://img.shetu66.com/2023/11/09/1699512531086193.png?x-oss-process=image/resize,h_800/watermark,image_d2F0ZXJtYXJrL2JhY2tncm91cDAxLnBuZw==,g_se,x_0,y_10/watermark,text_6K6-5Zu-572RIOe8luWPtzo2MTAxMjI0NjQ0NDU0Njg4OTQ=,type_ZmFuZ3poZW5naGVpdGk,color_FFFFFF,size_12,g_se,x_15,y_16'
+        _total[0] = 0
+        await AsyncFileReader.download(src, 'test/1234.jpg', process_fn=callback2)
+        
+        src2 = 'http://globalimg.sucai999.com/uploadfile/20211209/267440/132835268627695428.mp4'
+        _total[0] = 0
+        await AsyncFileReader.download(src2, 'test/1234.mp4', process_fn=callback2)
+        
+    asyncio.run(test())
+    
+    
+        
 
                     
                         
