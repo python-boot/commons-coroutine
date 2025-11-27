@@ -1,5 +1,5 @@
 [project]
-name = "pyboot-commons-async"
+name = "pyboot-commons-coroutine"
 version = "1.3.3"                    # 版本顺手+1，避免“文件已存在”
 readme = "README.md"
 license = "Apache-2.0"
@@ -10,7 +10,7 @@ authors = [
 maintainers = [{name = "joinsunsoft", email = "inthirties.liu@hotmail.com"}]
 requires-python = ">=3.12.10"
 keywords = ["web", "framework", "cli", "springboot", "fastapi"]
-description="Pyboot-commons-async is an open-source utility package that simplifies the development of async."
+description="Pyboot-commons-coroutine is an open-source utility package that simplifies the development of coroutine."
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

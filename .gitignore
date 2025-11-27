@@ -4,3 +4,7 @@ __pycache__
 build
 dist
 pyboot_commons_jwt.egg-info
+/pyboot_commons_async.egg-info
+/test/1234.jpg
+/test/1234.mp4
+pyboot_commons_coroutine.egg-info
